@@ -1,52 +1,81 @@
 <template>
   <view class="index-page">
-    <Hello />
-    <UnoCss />
-    <uni-badge text="1"></uni-badge>
-    <text class="h2"> 查看其它页面0000示例↓ </text>
-    <view>
-      <navigator v-for="(v, idx) in pages" :key="idx" :url="v.url">{{
-        v.title
-      }}</navigator>
-    </view>
+    <u-grid :col="3" hover-class="hover-class">
+      <u-grid-item
+        @click="handleGridClick(item.url)"
+        v-for="(item, index) in grids"
+        :index="index"
+        :key="index"
+      >
+        <uni-icons :type="item.ico" :size="30" color="#777" />
+        <text class="grid-text">{{ item.name }}</text>
+      </u-grid-item>
+    </u-grid>
   </view>
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import Hello from '@/components/hello/index.vue'
-import UnoCss from '@/components/unocss/index.vue'
 
-const pages = reactive([
+interface GridItem {
+  name: string
+  ico: string
+  url: string
+}
+const grids: GridItem[] = [
   {
-    title: 'Pinia Demo',
-    url: '/pages/pinia/index'
+    name: '获取openid',
+    ico: 'link',
+    url: '../getOpenId/getOpenId'
   },
   {
-    title: 'Axios Demo',
-    url: '/pages/axios/index'
+    name: '生成二维码',
+    ico: 'redo-filled',
+    url: '../QRcode/QRcode'
   },
   {
-    title: 'uView Demo',
-    url: '/pages/uview/index'
+    name: '微信手机号',
+    ico: 'email',
+    url: '../getPhone/getPhone'
   },
   {
-    title: 'UnoCSS Demo',
-    url: '/pages/unocss/index'
+    name: '注册',
+    ico: 'paperplane',
+    url: '../register/register'
+  },
+  {
+    name: 'login',
+    ico: 'auth',
+    url: '../login/login'
+  },
+  {
+    name: 'loginPhone',
+    ico: 'phone',
+    url: '../signOrLoginByMobilePhone/signOrLoginByMobilePhone'
   }
-])
+]
+
+const handleGridClick = (url: string) => {
+  uni.navigateTo({
+    url
+  })
+}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .index-page {
   font-style: normal;
   text-align: center;
 }
-.h2 {
-  color: green;
-  font-size: 50rpx;
-}
-navigator {
-  color: #1e80ff;
+.grid-item-box {
+  flex: 1;
+  // position: relative;
+  /* #ifndef APP-NVUE */
+  display: flex;
+  /* #endif */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0;
 }
 </style>

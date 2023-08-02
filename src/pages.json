@@ -4,9 +4,64 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "uni-app-home"
+        "navigationBarTitleText": "首页"
       }
     },
+    {
+      "path": "pages/about/about",
+      "style": {
+        "navigationBarTitleText": "关于",
+        "enablePullDownRefresh": false
+      }
+    },
+    // {
+    //   "path": "pages/getOpenId/getOpenId",
+    //   "style": {
+    //     "navigationBarTitleText": "",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
+    // {
+    //   "path": "pages/QRcode/QRcode",
+    //   "style": {
+    //     "navigationBarTitleText": "QRcode",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
+    // {
+    //   "path": "pages/getPhone/getPhone",
+    //   "style": {
+    //     "navigationBarTitleText": "",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
+    // {
+    //   "path": "pages/register/register",
+    //   "style": {
+    //     "navigationBarTitleText": "register",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
+    // {
+    //   "path": "pages/login/login",
+    //   "style": {
+    //     "navigationBarTitleText": "",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
+    // {
+    //   "path": "pages/signOrLoginByMobilePhone/signOrLoginByMobilePhone",
+    //   "style": {
+    //     "navigationBarTitleText": "",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
+    // {
+    //   "path": "pages/index/index",
+    //   "style": {
+    //     "navigationBarTitleText": "uni-app-home"
+    //   }
+    // },
     {
       "path": "pages/pinia/index",
       "style": {
@@ -38,6 +93,25 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
+  "tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#318efb",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/img/icon_API.png",
+				"selectedIconPath": "static/img/icon_API_HL.png"
+			},
+			{
+				"pagePath": "pages/about/about",
+				"text": "关于",
+				"iconPath": "static/img/wechat.png",
+				"selectedIconPath": "static/img/wechatHL.png"
+			}
+		]
+	},
   "easycom": {
     "custom": {
       "^u-(.*)": "vk-uview-ui/components/u-$1/u-$1.vue",
