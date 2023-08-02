@@ -14,13 +14,13 @@
         "enablePullDownRefresh": false
       }
     },
-    // {
-    //   "path": "pages/getOpenId/getOpenId",
-    //   "style": {
-    //     "navigationBarTitleText": "",
-    //     "enablePullDownRefresh": false
-    //   }
-    // },
+    {
+      "path": "pages/getOpenid/getOpenid",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
     // {
     //   "path": "pages/QRcode/QRcode",
     //   "style": {

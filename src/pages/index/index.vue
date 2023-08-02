@@ -15,8 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-
 interface GridItem {
   name: string
   ico: string
@@ -26,7 +24,7 @@ const grids: GridItem[] = [
   {
     name: '获取openid',
     ico: 'link',
-    url: '../getOpenId/getOpenId'
+    url: '../getOpenid/getOpenid'
   },
   {
     name: '生成二维码',

@@ -16,7 +16,7 @@
       "@types/node",
       "vitest/globals"
     ],
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
