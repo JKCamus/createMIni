@@ -2,6 +2,7 @@
   <view class="index-page">
     <Hello />
     <UnoCss />
+    <uni-badge text="1"></uni-badge>
     <text class="h2"> 查看其它页面0000示例↓ </text>
     <view>
       <navigator v-for="(v, idx) in pages" :key="idx" :url="v.url">{{

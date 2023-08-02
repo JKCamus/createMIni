@@ -19,6 +19,7 @@ specifiers:
   '@dcloudio/uni-mp-weixin': 3.0.0-alpha-3060920221114001
   '@dcloudio/uni-quickapp-webview': 3.0.0-alpha-3060920221114001
   '@dcloudio/uni-stacktracey': 3.0.0-alpha-3060920221114001
+  '@dcloudio/uni-ui': ^1.4.28
   '@dcloudio/vite-plugin-uni': 3.0.0-alpha-3060920221114001
   '@types/node': ^17.0.45
   '@typescript-eslint/eslint-plugin': ^5.30.3
@@ -41,6 +42,7 @@ specifiers:
   pinia: ^2.0.14
   prettier: ^2.7.1
   sass: ^1.53.0
+  sass-loader: ^13.3.2
   simple-git-hooks: ^2.8.1
   typescript: ^4.7.4
   unocss: ^0.46.4
@@ -66,9 +68,11 @@ dependencies:
   '@dcloudio/uni-mp-toutiao': 3.0.0-alpha-3060920221114001_vue@3.2.45
   '@dcloudio/uni-mp-weixin': 3.0.0-alpha-3060920221114001_vue@3.2.45
   '@dcloudio/uni-quickapp-webview': 3.0.0-alpha-3060920221114001_vue@3.2.45
+  '@dcloudio/uni-ui': 1.4.28
   axios: 0.27.2
   cz-git: 1.4.1
   pinia: 2.0.14_e7lp6ggkpgyi5vqd44m2kxvk6i
+  sass-loader: 13.3.2_sass@1.53.0
   vk-uview-ui: 1.3.7
   vue: 3.2.45
   vue-i18n: 9.1.10_vue@3.2.45
@@ -1005,6 +1009,10 @@ packages:
       - supports-color
       - ts-node
       - vue
+    dev: false
+
+  /@dcloudio/uni-ui/1.4.28:
+    resolution: {integrity: sha512-e/lSbvR79KH9+d3D4ueNbvD6szigjO/5IyjBNmiTqaj0PTS324fBV3L6f3s1qpkYonM4rdOl000hVOcAg6Gh/A==}
     dev: false
 
   /@dcloudio/vite-plugin-uni/3.0.0-alpha-3060920221114001_vite@3.2.3+vue@3.2.45:
@@ -4432,6 +4440,10 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /neo-async/2.6.2:
+    resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
+    dev: false
+
   /node-fetch-native/0.1.8:
     resolution: {integrity: sha512-ZNaury9r0NxaT2oL65GvdGDy+5PlSaHTovT6JV5tOW07k1TQmgC0olZETa4C9KZg0+6zBr99ctTYa3Utqj9P/Q==}
     dev: true
@@ -5043,6 +5055,29 @@ packages:
 
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+
+  /sass-loader/13.3.2_sass@1.53.0:
+    resolution: {integrity: sha512-CQbKl57kdEv+KDLquhC+gE3pXt74LEAzm+tzywcA0/aHZuub8wTErbjAoNI57rPUWRYRNC5WUnNl8eGJNbDdwg==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      fibers: '>= 3.1.0'
+      node-sass: ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+      sass: ^1.3.0
+      sass-embedded: '*'
+      webpack: ^5.0.0
+    peerDependenciesMeta:
+      fibers:
+        optional: true
+      node-sass:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+    dependencies:
+      neo-async: 2.6.2
+      sass: 1.53.0
+    dev: false
 
   /sass/1.53.0:
     resolution: {integrity: sha512-zb/oMirbKhUgRQ0/GFz8TSAwRq2IlR29vOUJZOx0l8sV+CkHUfHa4u5nqrG+1VceZp7Jfj59SVW9ogdhTvJDcQ==}
