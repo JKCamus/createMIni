@@ -10,37 +10,31 @@
     </button>
     <p class="openid-view">返回的Openid:</p>
     <p class="openid-view">{{ openid }}</p>
+    <MessagePopup ref="messageRef"></MessagePopup>
   </view>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import useBmob from '@hooks/useBmob'
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs, getCurrentInstance, inject, ref } from 'vue'
+import MessagePopup from '@utils/popupPlugin/popupMessage.vue'
+const messageRef = ref(null)
 
-export default {
-  data() {
-    return {}
-  },
-  methods: {},
-  setup() {
-    const Bmob = useBmob()
-    const state = reactive({
-      loading: true,
-      openid: ''
-    })
-    const handleClick = async () => {
-      try {
-        const res = await uni.login({})
-        const result = await Bmob.User.requestOpenId(res?.code)
-        state.openid = result?.openid
-      } catch (error) {
-        console.log('Error: ' + error)
-      }
-    }
-    return {
-      ...toRefs(state),
-      handleClick
-    }
+const Bmob = useBmob()
+const state = reactive({
+  loading: true,
+  openid: ''
+})
+
+const handleClick = async () => {
+  try {
+    const res = await uni.login({})
+    const result = await Bmob.User.requestOpenId(res?.code)
+    state.openid = result?.openid
+    messageRef.value.showMessagePopup('error','0000')
+    console.log('messageRef', messageRef.value)
+  } catch (error) {
+    console.log('Error: ' + error)
   }
 }
 </script>
