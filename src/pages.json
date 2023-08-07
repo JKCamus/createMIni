@@ -21,13 +21,13 @@
         "enablePullDownRefresh": false
       }
     },
-    // {
-    //   "path": "pages/QRcode/QRcode",
-    //   "style": {
-    //     "navigationBarTitleText": "QRcode",
-    //     "enablePullDownRefresh": false
-    //   }
-    // },
+    {
+      "path": "pages/getQRcodeImg/getQRcodeImg",
+      "style": {
+        "navigationBarTitleText": "QRcode",
+        "enablePullDownRefresh": false
+      }
+    },
     // {
     //   "path": "pages/getPhone/getPhone",
     //   "style": {
@@ -35,13 +35,13 @@
     //     "enablePullDownRefresh": false
     //   }
     // },
-    // {
-    //   "path": "pages/register/register",
-    //   "style": {
-    //     "navigationBarTitleText": "register",
-    //     "enablePullDownRefresh": false
-    //   }
-    // },
+    {
+      "path": "pages/register/register",
+      "style": {
+        "navigationBarTitleText": "register",
+        "enablePullDownRefresh": false
+      }
+    },
     {
       "path": "pages/login/login",
       "style": {
