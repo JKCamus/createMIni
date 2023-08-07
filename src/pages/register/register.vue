@@ -64,7 +64,7 @@ const rules = {
     rules: [
       {
         required: true,
-        errorMessage: '请输入用户名'
+        errorMessage: '请输入密码'
       }
     ]
   },
