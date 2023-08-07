@@ -29,7 +29,7 @@ const grids: GridItem[] = [
   {
     name: '生成二维码',
     ico: 'redo-filled',
-    url: '../QRcode/QRcode'
+    url: '../getQRcodeImg/getQRcodeImg'
   },
   {
     name: '微信手机号',
