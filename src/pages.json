@@ -28,6 +28,21 @@
         "enablePullDownRefresh": false
       }
     },
+    {
+      "path": "pages/getUserInfo/getNickname",
+      "style": {
+        "navigationBarTitleText": "nickname",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/generateAvatar/generateAvatar",
+      "style": {
+        "navigationBarTitleText": "nickname",
+        "enablePullDownRefresh": false
+      }
+    },
+
     // {
     //   "path": "pages/getPhone/getPhone",
     //   "style": {

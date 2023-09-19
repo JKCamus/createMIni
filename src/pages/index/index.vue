@@ -50,6 +50,16 @@ const grids: GridItem[] = [
     name: 'loginPhone',
     ico: 'phone',
     url: '../signOrLoginByMobilePhone/signOrLoginByMobilePhone'
+  },
+  {
+    name: 'userInfo',
+    ico: 'person-filled',
+    url: '../getUserInfo/getNickname'
+  },
+  {
+    name: 'generateAvatar',
+    ico: 'fire',
+    url: '../generateAvatar/generateAvatar'
   }
 ]
 
@@ -67,10 +77,7 @@ const handleGridClick = (url: string) => {
 }
 .grid-item-box {
   flex: 1;
-  // position: relative;
-  /* #ifndef APP-NVUE */
   display: flex;
-  /* #endif */
   flex-direction: column;
   align-items: center;
   justify-content: center;
