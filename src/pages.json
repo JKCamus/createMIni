@@ -36,6 +36,13 @@
       }
     },
     {
+      "path": "pages/inARush/inARush",
+      "style": {
+        "navigationBarTitleText": "inARush",
+        "enablePullDownRefresh": false,
+      }
+    },
+    {
       "path": "pages/generateAvatar/generateAvatar",
       "style": {
         "navigationBarTitleText": "nickname",

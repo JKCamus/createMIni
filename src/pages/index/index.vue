@@ -57,6 +57,11 @@ const grids: GridItem[] = [
     url: '../getUserInfo/getNickname'
   },
   {
+    name: 'inARush',
+    ico: 'calendar',
+    url: '../inARush/inARush'
+  },
+  {
     name: 'generateAvatar',
     ico: 'fire',
     url: '../generateAvatar/generateAvatar'
