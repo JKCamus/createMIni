@@ -39,7 +39,7 @@
       "path": "pages/inARush/inARush",
       "style": {
         "navigationBarTitleText": "inARush",
-        "enablePullDownRefresh": false,
+        "enablePullDownRefresh": false
       }
     },
     {
@@ -116,27 +116,30 @@
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
-		"color": "#7A7E83",
-		"selectedColor": "#318efb",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"text": "首页",
-				"iconPath": "static/img/icon_API.png",
-				"selectedIconPath": "static/img/icon_API_HL.png"
-			},
-			{
-				"pagePath": "pages/about/about",
-				"text": "关于",
-				"iconPath": "static/img/wechat.png",
-				"selectedIconPath": "static/img/wechatHL.png"
-			}
-		]
-	},
+    "color": "#7A7E83",
+    "selectedColor": "#318efb",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/img/icon_API.png",
+        "selectedIconPath": "static/img/icon_API_HL.png"
+      },
+      {
+        "pagePath": "pages/about/about",
+        "text": "关于",
+        "iconPath": "static/img/wechat.png",
+        "selectedIconPath": "static/img/wechatHL.png"
+      }
+    ]
+  },
   "easycom": {
     "custom": {
-      "^u-(.*)": "vk-uview-ui/components/u-$1/u-$1.vue",
+      "^u--(.*)": "uview-plus/components/u-$1/u-$1.vue",
+      "^up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+      "^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue",
       "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
     }
   }

@@ -1,19 +1,45 @@
 <template>
   <view id="clock">
-    <p class="time">{{ currentTime }}</p>
-    <view>
-      <view> 目标时间 </view>
-      <view> 预留时间 </view>
-      <view> 路上预估 </view>
-      <view> 出发时间 </view>
+    <p class="time">{{ time }}</p>
+  </view>
+  <view class="controlCell">
+    <view
+      v-for="(item, index) in timeControl"
+      :key="item.key"
+      :class="item.key"
+    >
+      <span @click="openTimePicker(index)">
+        {{ `${item.label}: ${item.value}` }}
+      </span>
+      <timePicker ref="timePickerRefs" v-model:time="item.value"></timePicker>
     </view>
+    <view> 出发时间 </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive, Ref } from 'vue'
+import timePicker from './timePicker.vue'
+const time = ref('')
+const timePickerRefs = ref()
 
-const currentTime = ref('')
+const timeControl = reactive([
+  {
+    key: 'target',
+    label: '目标时间',
+    value: '00:00'
+  },
+  {
+    key: 'buffer',
+    label: '预留时间',
+    value: '00:00'
+  },
+  {
+    key: 'onTheRoad',
+    label: '路上时间',
+    value: '00:00'
+  }
+])
 
 const showTime = () => {
   const updateTime = () => {
@@ -26,7 +52,7 @@ const showTime = () => {
     const formattedH: string = h < 10 ? '0' + h : h.toString()
     const formattedM: string = m < 10 ? '0' + m : m.toString()
     const formattedS: string = s < 10 ? '0' + s : s.toString()
-    currentTime.value = `${formattedH}:${formattedM}:${formattedS} ${session}`
+    time.value = `${formattedH}:${formattedM}:${formattedS} ${session}`
   }
 
   onMounted(() => {
@@ -35,6 +61,11 @@ const showTime = () => {
   })
 }
 showTime()
+
+const openTimePicker = (index) => {
+  timePickerRefs.value[index].show = true
+}
+
 </script>
 
 <style lang="scss">
@@ -72,6 +103,17 @@ p {
     letter-spacing: 0.1em;
     font-size: 12px;
     padding: 20px 0 0;
+  }
+}
+.controlCell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  .bufferTime {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

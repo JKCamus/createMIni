@@ -2,7 +2,9 @@ import { createSSRApp } from 'vue'
 import * as Pinia from 'pinia'
 import Bmob from "hydrogen-js-sdk";
 // @ts-ignore
-import uView from 'vk-uview-ui'
+import uviewPlus from 'uview-plus'
+
+
 import App from './App.vue'
 
 // unocss
@@ -10,13 +12,15 @@ import 'uno.css'
 
 export function createApp() {
   const app = createSSRApp(App)
+  
   app.use(Pinia.createPinia())
   Bmob.initialize(
 		'ce58cbd149a29c39',
 		'qwertyuiop'
 	)
   app.config.globalProperties.$Bmob = Bmob;
-  app.use(uView)
+  app.use(uviewPlus)
+
   return {
     app,
     // uni-app 官方文档示例 https://zh.uniapp.dcloud.io/tutorial/vue3-pinia.html#%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86-pinia
