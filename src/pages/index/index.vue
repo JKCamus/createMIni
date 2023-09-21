@@ -1,7 +1,8 @@
 <template>
   <view class="index-page">
-    <u-grid :col="3" hover-class="hover-class">
+    <u-grid :col="3" border hover-class="hover-class">
       <u-grid-item
+        :customStyle="{padding:20+'rpx'+' 0'}"
         @click="handleGridClick(item.url)"
         v-for="(item, index) in grids"
         :index="index"
@@ -80,12 +81,12 @@ const handleGridClick = (url: string) => {
   font-style: normal;
   text-align: center;
 }
-.grid-item-box {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 0;
+.u-grid-item {
+  padding: 15px 20px !important;
+}
+
+.border,
+.is-first-border:is(:first-child) {
+  border-style: none;
 }
 </style>
