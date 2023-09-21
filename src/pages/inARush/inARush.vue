@@ -29,13 +29,11 @@ const time = ref('')
 const resultTime = ref('')
 const timePickerRefs = ref()
 
-const currentDate = dayjs()
-
 const timeControl = reactive([
   {
     key: 'target',
     label: '目标时间',
-    value: currentDate.format('HH:mm')
+    value: dayjs().format('HH:mm')
   },
   {
     key: 'buffer',
@@ -51,6 +49,7 @@ const timeControl = reactive([
 
 const showTime = () => {
   const updateTime = () => {
+    const currentDate = dayjs()
     time.value = currentDate.format('HH:mm:ss')
   }
 
