@@ -13,21 +13,29 @@
       </span>
       <timePicker ref="timePickerRefs" v-model:time="item.value"></timePicker>
     </view>
-    <view> 出发时间 </view>
+
+    <view>
+      <button @click="handleInARush">计算</button>
+      <span>最晚出发时间：{{ resultTime }}</span>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive, Ref } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import timePicker from './timePicker.vue'
+import dayjs from 'dayjs'
 const time = ref('')
+const resultTime = ref('')
 const timePickerRefs = ref()
+
+const currentDate = dayjs()
 
 const timeControl = reactive([
   {
     key: 'target',
     label: '目标时间',
-    value: '00:00'
+    value: currentDate.format('HH:mm')
   },
   {
     key: 'buffer',
@@ -43,16 +51,7 @@ const timeControl = reactive([
 
 const showTime = () => {
   const updateTime = () => {
-    const date = new Date()
-    let h = date.getHours() // 0 - 23
-    let m = date.getMinutes() // 0 - 59
-    let s = date.getSeconds() // 0 - 59
-    const session = h >= 12 ? 'PM' : 'AM'
-    h = h === 0 ? 12 : h > 12 ? h - 12 : h
-    const formattedH: string = h < 10 ? '0' + h : h.toString()
-    const formattedM: string = m < 10 ? '0' + m : m.toString()
-    const formattedS: string = s < 10 ? '0' + s : s.toString()
-    time.value = `${formattedH}:${formattedM}:${formattedS} ${session}`
+    time.value = currentDate.format('HH:mm:ss')
   }
 
   onMounted(() => {
@@ -66,6 +65,32 @@ const openTimePicker = (index) => {
   timePickerRefs.value[index].show = true
 }
 
+const handleInARush = () => {
+  const parseTime = (timeStr: string) => {
+    const [hours, minutes] = timeStr.split(':').map(Number)
+    return { hours, minutes }
+  }
+
+  const targetTime = parseTime(timeControl[0].value)
+  const bufferTime = parseTime(timeControl[1].value)
+  const onTheRoadTime = parseTime(timeControl[2].value)
+
+  let resultDate = dayjs().hour(targetTime.hours).minute(targetTime.minutes)
+
+  // 减去预留时间和路上时间
+  resultDate = resultDate
+    .subtract(bufferTime.hours + onTheRoadTime.hours, 'hour')
+    .subtract(bufferTime.minutes + onTheRoadTime.minutes, 'minute')
+
+  const result = resultDate.format('HH:mm')
+
+  // 检查 resultTime 是否超出当前时间
+  if (resultDate.isBefore(dayjs())) {
+    throw new Error('计算的出发时间超出当前时间!')
+  }
+
+  resultTime.value = result
+}
 </script>
 
 <style lang="scss">

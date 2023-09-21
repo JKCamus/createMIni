@@ -27,7 +27,7 @@ const cancel = () => {
 
 const confirm = (e) => {
   show.value = false
-  emit('update:time', '00:08')
+  emit('update:time', e.value)
 
   console.log('value', e)
 }
