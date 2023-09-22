@@ -32,41 +32,41 @@ const grids: GridItem[] = [
     ico: 'redo-filled',
     url: '../getQRcodeImg/getQRcodeImg'
   },
-  {
-    name: '微信手机号',
-    ico: 'email',
-    url: '../getPhone/getPhone'
-  },
-  {
-    name: '注册',
-    ico: 'paperplane',
-    url: '../register/register'
-  },
-  {
-    name: 'login',
-    ico: 'auth',
-    url: '../login/login'
-  },
-  {
-    name: 'loginPhone',
-    ico: 'phone',
-    url: '../signOrLoginByMobilePhone/signOrLoginByMobilePhone'
-  },
-  {
-    name: 'userInfo',
-    ico: 'person-filled',
-    url: '../getUserInfo/getNickname'
-  },
+  // {
+  //   name: '微信手机号',
+  //   ico: 'email',
+  //   url: '../getPhone/getPhone'
+  // },
+  // {
+  //   name: '注册',
+  //   ico: 'paperplane',
+  //   url: '../register/register'
+  // },
+  // {
+  //   name: 'login',
+  //   ico: 'auth',
+  //   url: '../login/login'
+  // },
+  // {
+  //   name: 'loginPhone',
+  //   ico: 'phone',
+  //   url: '../signOrLoginByMobilePhone/signOrLoginByMobilePhone'
+  // },
+  // {
+  //   name: 'userInfo',
+  //   ico: 'person-filled',
+  //   url: '../getUserInfo/getNickname'
+  // },
   {
     name: 'inARush',
     ico: 'calendar',
     url: '../inARush/inARush'
   },
-  {
-    name: 'generateAvatar',
-    ico: 'fire',
-    url: '../generateAvatar/generateAvatar'
-  }
+  // {
+  //   name: 'generateAvatar',
+  //   ico: 'fire',
+  //   url: '../generateAvatar/generateAvatar'
+  // }
 ]
 
 const handleGridClick = (url: string) => {

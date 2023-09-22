@@ -1,37 +1,35 @@
 <template>
   <view id="clock">
     <p class="currentTime">{{ time }}</p>
+    <p class="currentDate">2023年9月23日</p>
   </view>
-  <view class="controlCell">
-    <uni-card
-      is-full
-      v-for="(item, index) in timeControl"
-      :key="item.key"
-      :class="item.key + ' cardBox'"
-      @click="openTimePicker(index)"
-    >
-      <span class="label" >
-        {{ item.label }}
-      </span>
-      <span class="time">
-        {{ item.value }}
-      </span>
+  <u-cell-group class="cellGroup">
+    <view v-for="(item, index) in timeControl">
+      <u-cell
+        :title="item.label"
+        :key="item.key"
+        @click="openTimePicker(index)"
+        :value="item.value"
+      >
+      </u-cell>
       <timePicker ref="timePickerRefs" v-model:time="item.value"></timePicker>
-    </uni-card>
-  </view>
-  <view class="result">
-    <button @click="handleInARush">计算</button>
-    <span>最晚出发时间：{{ resultTime }}</span>
-  </view>
+    </view>
+    <u-cell class="result" title="最晚出发时间" :value="resultTime"></u-cell>
+  </u-cell-group>
+  <button class="calcButton" @click="handleInARush">赶时间</button>
+  <popupMessage id="message-popup"></popupMessage>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
 import timePicker from './timePicker.vue'
+import Notify from '@components/popupMessage/Notify'
+
 import dayjs from 'dayjs'
 const time = ref('')
 const resultTime = ref('')
 const timePickerRefs = ref()
+const uToast = ref()
 
 const timeControl = reactive([
   {
@@ -89,39 +87,39 @@ const handleInARush = () => {
 
   // 检查 resultTime 是否超出当前时间
   if (resultDate.isBefore(dayjs())) {
-    throw new Error('计算的出发时间超出当前时间!')
+    Notify({
+      type: 'error',
+      message: '计算的出发时间超出当前时间!'
+    })
+    resultTime.value = 'error'
+  } else {
+    resultTime.value = result
   }
-
-  resultTime.value = result
 }
 </script>
 
 <style lang="scss">
 page {
-  /* background: #0f3854; */
-  /* background: radial-gradient(ellipse at center, #0a2e38 0%, #000000 70%);
-  background-size: 100%; */
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 p {
   margin: 0;
   padding: 0;
 }
 #clock {
-  /* font-family: 'Share Tech Mono', monospace; */
-  font-family: serif;
+  font-weight: bold;
   text-align: center;
-  /* position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%); */
-  /* color: #daf6ff; */
+  margin: 56px 40px;
+  .currentDate {
+    color: #69c0ff;
+  }
 
-  /* text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0); */
   .currentTime {
     letter-spacing: 0.05em;
     font-size: 60px;
     padding: 5px 0;
-    color: #3a00fb;
+    color: #0050b3;
   }
   .date {
     letter-spacing: 0.1em;
@@ -152,11 +150,41 @@ p {
     margin-top: 20px;
   }
 }
-
-.result {
-  margin-top: 20px;
+.cellGroup {
+  .u-cell__body {
+    padding: 32px 24px !important;
+    .u-cell__title-text {
+      font-size: 24px;
+    }
+    .u-cell__value {
+      font-size: 24px;
+    }
+  }
 }
 
+.result {
+  .u-cell__value {
+    color: #1c71e9 !important;
+  }
+}
+.calcButton {
+  width: 220rpx;
+  margin-top: 140rpx;
+  background: linear-gradient(to top right, #5287f0, #185fec);
+  box-shadow: 0px 3px 4px #5287f0;
+  color: #fff;
+  font-size: 34rpx;
+  &:active {
+    transform: scale(0.96);
+  }
+}
+button {
+  border-radius: 48rpx;
+}
+
+button::after {
+  border: unset;
+}
 .controlCell {
   display: flex;
   justify-content: center;
