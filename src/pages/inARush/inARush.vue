@@ -1,23 +1,27 @@
 <template>
   <view id="clock">
-    <p class="time">{{ time }}</p>
+    <p class="currentTime">{{ time }}</p>
   </view>
   <view class="controlCell">
-    <view
+    <uni-card
+      is-full
       v-for="(item, index) in timeControl"
       :key="item.key"
-      :class="item.key"
+      :class="item.key + ' cardBox'"
+      @click="openTimePicker(index)"
     >
-      <span @click="openTimePicker(index)">
-        {{ `${item.label}: ${item.value}` }}
+      <span class="label" >
+        {{ item.label }}
+      </span>
+      <span class="time">
+        {{ item.value }}
       </span>
       <timePicker ref="timePickerRefs" v-model:time="item.value"></timePicker>
-    </view>
-
-    <view>
-      <button @click="handleInARush">计算</button>
-      <span>最晚出发时间：{{ resultTime }}</span>
-    </view>
+    </uni-card>
+  </view>
+  <view class="result">
+    <button @click="handleInARush">计算</button>
+    <span>最晚出发时间：{{ resultTime }}</span>
   </view>
 </template>
 
@@ -113,7 +117,7 @@ p {
   /* color: #daf6ff; */
 
   /* text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0); */
-  .time {
+  .currentTime {
     letter-spacing: 0.05em;
     font-size: 60px;
     padding: 5px 0;
@@ -129,15 +133,34 @@ p {
     padding: 20px 0 0;
   }
 }
+.cardBox {
+  width: 220rpx;
+
+  .uni-card {
+    height: 120px;
+    padding: 8px 0 !important;
+    border-radius: 8px;
+  }
+  .label {
+    font-size: 18px;
+    color: #3a00fb;
+  }
+  .time {
+    font-size: 20px;
+    font-weight: bold;
+    display: block;
+    margin-top: 20px;
+  }
+}
+
+.result {
+  margin-top: 20px;
+}
+
 .controlCell {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   text-align: center;
-  .bufferTime {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  justify-content: space-around;
 }
 </style>

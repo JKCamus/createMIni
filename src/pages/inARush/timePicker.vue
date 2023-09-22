@@ -28,8 +28,6 @@ const cancel = () => {
 const confirm = (e) => {
   show.value = false
   emit('update:time', e.value)
-
-  console.log('value', e)
 }
 const handle = () => {
   emit('update:time', '00:08')

@@ -2,7 +2,7 @@
   <view class="index-page">
     <u-grid :col="3" border hover-class="hover-class">
       <u-grid-item
-        :customStyle="{padding:20+'rpx'+' 0'}"
+        :customStyle="{ padding: 20 + 'rpx' + ' 0' }"
         @click="handleGridClick(item.url)"
         v-for="(item, index) in grids"
         :index="index"
@@ -84,7 +84,6 @@ const handleGridClick = (url: string) => {
 .u-grid-item {
   padding: 15px 20px !important;
 }
-
 .border,
 .is-first-border:is(:first-child) {
   border-style: none;
