@@ -29,12 +29,26 @@
       }
     },
     {
-      "path": "pages/getUserInfo/getNickname",
+      "path": "pages/practice/practice",
       "style": {
-        "navigationBarTitleText": "nickname",
+        "navigationBarTitleText": "practice",
         "enablePullDownRefresh": false
       }
     },
+    {
+      "path": "pages/practice/practiceDetail",
+      "style": {
+        "navigationBarTitleText": "practiceDetail",
+        "enablePullDownRefresh": false
+      }
+    },
+    // {
+    //   "path": "pages/getUserInfo/getNickname",
+    //   "style": {
+    //     "navigationBarTitleText": "nickname",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
     {
       "path": "pages/inARush/inARush",
       "style": {
@@ -57,20 +71,20 @@
     //     "enablePullDownRefresh": false
     //   }
     // },
-    {
-      "path": "pages/register/register",
-      "style": {
-        "navigationBarTitleText": "register",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/login/login",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
+    // {
+    //   "path": "pages/register/register",
+    //   "style": {
+    //     "navigationBarTitleText": "register",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
+    // {
+    //   "path": "pages/login/login",
+    //   "style": {
+    //     "navigationBarTitleText": "",
+    //     "enablePullDownRefresh": false
+    //   }
+    // },
     // {
     //   "path": "pages/signOrLoginByMobilePhone/signOrLoginByMobilePhone",
     //   "style": {

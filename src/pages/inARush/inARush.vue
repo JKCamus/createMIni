@@ -91,10 +91,12 @@ const handleInARush = () => {
       type: 'error',
       message: '计算的出发时间超出当前时间!'
     })
+    
     resultTime.value = 'error'
   } else {
     resultTime.value = result
   }
+  
 }
 </script>
 
