@@ -1,14 +1,13 @@
 import { InjectionKey, Ref, ToRefs } from 'vue'
 
+// 用户信息
 interface UserInfoType {
   userName: string
   userId: number
 }
 
-
 // 提供响应式数据
 export type ReadOnlyReactiveUserInfoType = Readonly<UserInfoType>
-
 
 export type ChangeUserNameType = (val: string) => void
 
@@ -31,6 +30,13 @@ export type ReadOnlyRefUserInfoType=Readonly<RefUserInfoType>
 
 export const ReadOnlyUserInfoKey:InjectionKey<ReadOnlyRefUserInfoType>=Symbol()
 export const ChangeReadOnlyUserNameRefKey:InjectionKey<ChangeUserNameType>=Symbol()
+
+
+
+export type RefCount=Ref<Readonly<number>>
+export type ChangeReadonlyType=(count:number)=>void
+export const ReadonlyCountKey:InjectionKey<RefCount>=Symbol()
+export const ChangeReadonlyCountKey:InjectionKey<(ChangeReadonlyType)>=Symbol()
 
 
 

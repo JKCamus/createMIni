@@ -14,7 +14,11 @@ import {
   ChangeReadOnlyReactiveUserNameKey,
   ReadOnlyRefUserInfoType,
   ReadOnlyUserInfoKey,
-  ChangeReadOnlyUserNameRefKey
+  ChangeReadOnlyUserNameRefKey,
+  ChangeReadonlyType,
+  ReadonlyCountKey,
+  ChangeReadonlyCountKey,
+  RefCount
 } from './type'
 
 // reactive版本
@@ -50,5 +54,15 @@ const changeUserNameRef = (name: string) => {
 
 provide<ReadOnlyRefUserInfoType>(ReadOnlyUserInfoKey, readonly(refUserInfo))
 provide<ChangeUserNameType>(ChangeReadOnlyUserNameRefKey, changeUserNameRef)
+
+// 但数据ref
+const count = ref(1)
+const changeParentCount = (n: number) => {
+  count.value = n
+}
+
+provide<ChangeReadonlyType>(ChangeReadonlyCountKey, changeParentCount)
+provide<RefCount>(ReadonlyCountKey, readonly(count))
+
 </script>
 <style lang="scss"></style>
