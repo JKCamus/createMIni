@@ -16,7 +16,10 @@
     </view>
     <u-cell class="result" title="最晚出发时间" :value="resultTime"></u-cell>
   </u-cell-group>
-  <button class="calcButton" @click="handleInARush">赶时间</button>
+  <view class="buttonGroup">
+    <button class="buttonStyle" @click="handleClear">清除</button>
+    <button class="buttonStyle" @click="handleInARush">赶时间</button>
+  </view>
   <popupMessage id="message-popup"></popupMessage>
 </template>
 
@@ -29,7 +32,7 @@ import dayjs from 'dayjs'
 const time = ref('')
 const resultTime = ref('')
 const timePickerRefs = ref()
-const uToast = ref()
+const storageKey = 'IN_A_RUSH'
 
 const timeControl = reactive([
   {
@@ -62,8 +65,38 @@ const showTime = () => {
 }
 showTime()
 
+onMounted(() => {
+  // 获取存储的数据
+  const storedData = uni.getStorageSync(storageKey)
+  if (storedData) {
+    const currentTime = dayjs().unix()
+    const elapsedTime = currentTime - storedData.timestamp
+    const isOverTime = elapsedTime > 24 * 60 * 60
+    if (isOverTime) {
+      uni.removeStorageSync()
+    } else {
+      timeControl[0].value = storedData.targetTime
+      timeControl[1].value = storedData.bufferTime
+      timeControl[2].value = storedData.onTheRoadTime
+      resultTime.value = storedData.result
+    }
+  }
+})
+
 const openTimePicker = (index) => {
   timePickerRefs.value[index].show = true
+}
+
+const handleClear = () => {
+  const initValue = '00:00'
+  const initTarget = dayjs().format('HH:mm')
+  timeControl.map((item) => {
+    return item.key === 'target'
+      ? (item.value = initTarget)
+      : (item.value = initValue)
+  })
+  resultTime.value = initValue
+  uni.removeStorageSync()
 }
 
 const handleInARush = () => {
@@ -91,12 +124,19 @@ const handleInARush = () => {
       type: 'error',
       message: '计算的出发时间超出当前时间!'
     })
-    
+
     resultTime.value = 'error'
   } else {
     resultTime.value = result
+
+    uni.setStorageSync(storageKey, {
+      timestamp: dayjs().unix(),
+      targetTime: timeControl[0].value,
+      bufferTime: timeControl[1].value,
+      onTheRoadTime: timeControl[2].value,
+      result: resultTime.value
+    })
   }
-  
 }
 </script>
 
@@ -169,7 +209,11 @@ p {
     color: #1c71e9 !important;
   }
 }
-.calcButton {
+
+.buttonGroup {
+  display: flex;
+}
+.buttonStyle {
   width: 220rpx;
   margin-top: 140rpx;
   background: linear-gradient(to top right, #5287f0, #185fec);
