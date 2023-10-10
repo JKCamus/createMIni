@@ -24,7 +24,7 @@
     <uni-section title="生成页面QRCode" type="'line'">
       <view class="img-box" v-if="state.imageBytes !== ''">
         <image
-          :style="`width:${state.size}px; height:${state.size}px; background-color: #eeeeee`"
+          :style="`width:${state.size}px; height:${1.1*state.size}px; background-color: #eeeeee`"
           :src="`data:image/png;base64,${state.imageBytes}`"
         ></image>
       </view>

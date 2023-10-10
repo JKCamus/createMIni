@@ -62,11 +62,11 @@ const grids: GridItem[] = [
     ico: 'calendar',
     url: '../inARush/inARush'
   },
-  {
-    name: 'practice',
-    ico: 'pyq',
-    url: '../practice/practice'
-  },
+  // {
+  //   name: 'practice',
+  //   ico: 'pyq',
+  //   url: '../practice/practice'
+  // },
   // {
   //   name: 'generateAvatar',
   //   ico: 'fire',
