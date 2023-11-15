@@ -27,16 +27,11 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss">
 .container {
     padding: 20rpx;
     background-color: #f5f5f5;
     height: 100vh;
-}
-
-<style lang="scss">
-.container {
-  margin: 20px;
 }
 .title {
   font-size: 0.85em;
@@ -46,4 +41,5 @@ export default {
   color: #5e6d82;
   line-height: 2em;
 }
+
 </style>
