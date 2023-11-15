@@ -63,10 +63,20 @@ const grids: GridItem[] = [
     url: '../inARush/inARush'
   },
   {
-    name: 'practice',
-    ico: 'pyq',
-    url: '../practice/practice'
+    name: '720 vr',
+    ico: 'eye',
+    url: '../panorama/panorama'
   },
+  {
+    name: 'hotPot',
+    ico: 'pyq',
+    url: '../hotPot/index'
+  },
+  // {
+  //   name: 'practice',
+  //   ico: 'pyq',
+  //   url: '../practice/practice'
+  // },
   // {
   //   name: 'generateAvatar',
   //   ico: 'fire',

@@ -14,7 +14,11 @@
       </u-cell>
       <timePicker ref="timePickerRefs" v-model:time="item.value"></timePicker>
     </view>
-    <u-cell class="result" title="最晚出发时间" :value="resultTime"></u-cell>
+    <u-cell
+      :class="isOutmoded ? 'error' : 'success'"
+      title="最晚出发时间"
+      :value="resultTime"
+    ></u-cell>
   </u-cell-group>
   <view class="buttonGroup">
     <button class="buttonStyle" @click="handleClear">清除</button>
@@ -24,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, computed } from 'vue'
 import timePicker from './timePicker.vue'
 import Notify from '@components/popupMessage/Notify'
 
@@ -32,6 +36,7 @@ import dayjs from 'dayjs'
 const time = ref('')
 const resultTime = ref('')
 const timePickerRefs = ref()
+let isOutmoded = ref(false)
 const storageKey = 'IN_A_RUSH'
 
 const timeControl = reactive([
@@ -78,7 +83,8 @@ onMounted(() => {
       timeControl[0].value = storedData.targetTime
       timeControl[1].value = storedData.bufferTime
       timeControl[2].value = storedData.onTheRoadTime
-      resultTime.value = storedData.result
+      // 读取之前的配置，但是不读取之前的数据
+      resultTime.value = ''
     }
   }
 })
@@ -95,7 +101,8 @@ const handleClear = () => {
       ? (item.value = initTarget)
       : (item.value = initValue)
   })
-  resultTime.value = initValue
+  resultTime.value = ''
+  isOutmoded.value = false
   uni.removeStorageSync()
 }
 
@@ -124,19 +131,18 @@ const handleInARush = () => {
       type: 'error',
       message: '计算的出发时间超出当前时间!'
     })
-
-    resultTime.value = 'error'
+    isOutmoded.value = true
   } else {
-    resultTime.value = result
-
-    uni.setStorageSync(storageKey, {
-      timestamp: dayjs().unix(),
-      targetTime: timeControl[0].value,
-      bufferTime: timeControl[1].value,
-      onTheRoadTime: timeControl[2].value,
-      result: resultTime.value
-    })
+    isOutmoded.value = false
   }
+  resultTime.value = result
+  uni.setStorageSync(storageKey, {
+    timestamp: dayjs().unix(),
+    targetTime: timeControl[0].value,
+    bufferTime: timeControl[1].value,
+    onTheRoadTime: timeControl[2].value,
+    result: resultTime.value
+  })
 }
 </script>
 
@@ -197,6 +203,7 @@ p {
     padding: 32px 24px !important;
     .u-cell__title-text {
       font-size: 24px;
+      line-height: 24px;
     }
     .u-cell__value {
       font-size: 24px;
@@ -204,9 +211,16 @@ p {
   }
 }
 
-.result {
+.success {
   .u-cell__value {
     color: #1c71e9 !important;
+    font-size: 22px;
+  }
+}
+.error {
+  .u-cell__value {
+    color: #f56c6c !important;
+    font-size: 22px;
   }
 }
 

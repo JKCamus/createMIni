@@ -42,6 +42,20 @@
         "enablePullDownRefresh": false
       }
     },
+    {
+      "path": "pages/panorama/panorama",
+      "style": {
+        "navigationBarTitleText": "panorama",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/hotPot/index",
+      "style": {
+        "navigationBarTitleText": "hotPot",
+        "enablePullDownRefresh": false
+      }
+    },
     // {
     //   "path": "pages/getUserInfo/getNickname",
     //   "style": {
