@@ -1,7 +1,7 @@
 <template>
   <view class="wrapper">
     <view class="titleInfo">
-      <p class="title">锅友</p>
+      <!-- <p class="title">锅友</p> -->
       <view class="icon">
         <img
           class="clockIcon"
@@ -28,8 +28,16 @@
       ></u-tabs>
     </view>
     <view class="menuCard">
-      <div v-for="activeItem in activeList">
-        <p>{{ activeItem.food }}</p>
+      <div
+        v-for="activeItem in activeList"
+        class="menu-item"
+        :key="activeItem.food"
+        @click="addToCook(activeItem.food, activeItem.time)"
+      >
+        <span class="foodName">{{ activeItem.food }}</span>
+        <span class="foodTimeContainer">
+          <span class="foodTime">{{ activeItem.formatTime }}</span>
+        </span>
       </div>
     </view>
     <view class="customBlock">
@@ -48,12 +56,23 @@
         color="#e93134"
       ></up-button>
     </view>
-    <view class="potCard"> </view>
+    <view class="potCard">
+      <foodProcess
+        v-for="cooking in cookingPoor"
+        :id="cooking.id"
+        :key="cooking.food"
+        :time="cooking.time"
+        :foodName="cooking.food"
+        @completeCooking="completeCooking"
+      ></foodProcess>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue'
+import foodProcess from './foodProcess.vue'
+
 enum MenuType {
   Meat = '肉类',
   Beef = '牛肉',
@@ -67,6 +86,10 @@ enum MenuType {
 interface List {
   food: string
   time: number
+}
+type CookingItem = List & {
+  id: number
+  completedAt?: number
 }
 
 interface MenuList {
@@ -133,16 +156,73 @@ const activeType = ref(MenuType.Meat)
 
 console.log('menuTypeList', menuTypeList)
 
-const menuTypeClick = ({ name }) => {
+const menuTypeClick = ({ name }: { name: MenuType }) => {
   activeType.value = name
 }
 
 const activeList = computed(() => {
   const activeMenu = menuList.find((menu) => menu.type === activeType.value)
-  return activeMenu ? activeMenu.list : []
+  const list = activeMenu ? activeMenu.list : []
+  const formatList = list.map((item) => ({
+    ...item,
+    formatTime: formatTime(item.time)
+  }))
+  return formatList
 })
+
+const formatTime = (time: number) => {
+  const min = Math.floor(time / 60)
+  const sec = time % 60
+  if (min > 0) {
+    return sec === 0 ? `${min}'` : `${min}'${sec}''`
+  }
+  return `${sec}''`
+}
+
+const cookingPoor = reactive<CookingItem[]>([])
+
+const addToCook = (food: string, time: number) => {
+  const cookingFood = {
+    id: Date.now(),
+    time,
+    food
+  }
+
+  cookingPoor.push(cookingFood)
+}
+
+const completeCooking = (id: number) => {
+  const index = cookingPoor.findIndex((item) => item.id === id)
+  if (index !== -1) {
+    cookingPoor[index].completedAt = Date.now()
+  }
+  cookingPoor.sort((a, b) => {
+    if (a.completedAt && b.completedAt) {
+      return a.completedAt - b.completedAt
+    }
+    if (a.completedAt) {
+      return -1
+    }
+    if (b.completedAt) {
+      return 1
+    }
+    return 0
+  })
+}
+
+const delTargetFood = (id: number) => {
+  const index = cookingPoor.findIndex((item) => item.id === id)
+  if (index !== -1) {
+    cookingPoor.splice(index, 1)
+  }
+}
+
+const clearAll = () => {
+  // 清空列表
+  cookingPoor.length = 0
+}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 $card-border-radius: 24rpx;
 
 .wrapper {
@@ -190,8 +270,37 @@ $card-border-radius: 24rpx;
   margin: 20rpx 0;
   padding: 20rpx;
   border-radius: $card-border-radius;
-
   background-color: #fff;
+  display: flex;
+  gap: 10rpx;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  align-content: flex-start;
+
+  .menu-item {
+    background-color: #ff4d4f;
+    height: 48rpx;
+    font-size: 28rpx;
+    color: white;
+    padding: 10rpx 18rpx;
+    border-radius: 10rpx;
+    justify-content: space-between;
+    margin-bottom: 10rpx;
+    display: flex;
+    align-items: center;
+  }
+
+  .foodName {
+    flex: none;
+    margin-right: 4rpx;
+  }
+  .foodTime {
+    font-size: 22rpx;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: end;
+    position: relative;
+    bottom: -4rpx;
+  }
 }
 .customBlock {
   background-color: #fff;
@@ -227,8 +336,7 @@ $card-border-radius: 24rpx;
 }
 .potCard {
   background-color: #fff;
-  height: 400rpx;
+  height: 500rpx;
   border-radius: $card-border-radius;
 }
-
 </style>
