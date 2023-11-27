@@ -6,9 +6,23 @@
       activeColor="#ff4d4f"
       height="30"
     ></u-line-progress>
-    <div class="infoMask">
-      <span class="foodName">{{ foodName }}</span>
-      <span class="remainTime">{{ countdown }}秒后可以吃~</span>
+    <div class="infoMask" :class="{ bold: percentage === 100 }">
+      <span :class="{ 'white-text': percentage >= 40 }" class="foodName"
+        >{{ foodName }} ({{ currentTime }} 下锅)
+      </span>
+      <u-icon
+        v-if="percentage === 100"
+        name="checkbox-mark"
+        color="#fff"
+        @click="clearCurrent"
+        size="20"
+      ></u-icon>
+      <span
+        v-else
+        :class="{ 'white-text': percentage >= 90 }"
+        class="remainTime"
+        >{{ countdown }}秒后可以吃~</span
+      >
     </div>
   </view>
 </template>
@@ -41,9 +55,9 @@ const { id, time, foodName } = withDefaults(defineProps<IProps>(), {
   foodName: ''
 })
 
-const endTime = dayjs().add(time, 'second')
-
 const countdown = ref(time)
+const endTime = dayjs().add(time, 'second')
+const currentTime = dayjs().format('HH:mm:ss')
 
 const percentage = computed(() => {
   const totalSeconds = time
@@ -70,6 +84,10 @@ onMounted(() => {
   }, 1000)
 })
 
+const clearCurrent = () => {
+  emit('delTargetFood', id)
+}
+
 // 组件卸载时清除定时器
 onUnmounted(() => {
   if (intervalId) {
@@ -81,6 +99,7 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .wrapper {
   position: relative;
+  margin: 6rpx 0;
 }
 .infoMask {
   font-size: 12px;
@@ -94,5 +113,12 @@ onUnmounted(() => {
   right: 0;
   transform: translateY(-50%);
   padding: 0 12px;
+  .white-text {
+    color: white;
+  }
+}
+.bold {
+  font-weight: 500;
+  font-size: 14px;
 }
 </style>

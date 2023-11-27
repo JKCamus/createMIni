@@ -57,14 +57,24 @@
       ></up-button>
     </view>
     <view class="potCard">
-      <foodProcess
-        v-for="cooking in cookingPoor"
-        :id="cooking.id"
-        :key="cooking.food"
-        :time="cooking.time"
-        :foodName="cooking.food"
-        @completeCooking="completeCooking"
-      ></foodProcess>
+      <div class="empty-container">
+        <img
+          class="empty-image"
+          src="../../static/img/hotpotEmpty.png"
+          alt="empty-icon"
+        />
+      </div>
+      <div class="inPot">
+        <foodProcess
+          v-for="cooking in cookingPoor"
+          :id="cooking.id"
+          :key="cooking.food"
+          :time="cooking.time"
+          :foodName="cooking.food"
+          @completeCooking="completeCooking"
+          @delTargetFood="delTargetFood"
+        ></foodProcess>
+      </div>
     </view>
   </view>
 </template>
@@ -154,7 +164,7 @@ const menuTypeList = menuList.map((item) => {
 
 const activeType = ref(MenuType.Meat)
 
-console.log('menuTypeList', menuTypeList)
+// console.log('menuTypeList', menuTypeList)
 
 const menuTypeClick = ({ name }: { name: MenuType }) => {
   activeType.value = name
@@ -338,5 +348,21 @@ $card-border-radius: 24rpx;
   background-color: #fff;
   height: 500rpx;
   border-radius: $card-border-radius;
+  .inPot {
+    padding: 0 10rpx;
+  }
+
+  .empty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .empty-image {
+    width: 400rpx;
+    height: 400rpx;
+    object-fit: contain;
+  }
 }
 </style>
