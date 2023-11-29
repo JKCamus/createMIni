@@ -57,34 +57,37 @@
       ></up-button>
     </view>
     <view class="potCard">
-      <div v-if="cookingPoor.length" class="tool">
-        <!-- <img
+      <div class="cookingPot" v-if="cookingPoor.length">
+        <div class="tool">
+          <!-- <img
           class="left-img"
           src="../../static/img/hotpotEmpty.png"
           alt="icon"
         /> -->
-        <div class="right-tools">
-          <span class="clear-button" @click="clearButton"> 🧹 </span>
+          <div class="right-tools">
+            <span class="clear-button" @click="clearButton"> 🧹 </span>
+          </div>
+        </div>
+        <div class="inPot">
+          <foodProcess
+            v-for="cooking in cookingPoor"
+            :id="cooking.id"
+            :key="cooking.food"
+            :time="cooking.time"
+            :foodName="cooking.food"
+            @completeCooking="completeCooking"
+            @delTargetFood="delTargetFood"
+          ></foodProcess>
         </div>
       </div>
+
       <div v-else="!cookingPoor.length" class="empty-container">
         <img
           class="empty-image"
           src="../../static/img/hotpotEmpty.png"
           alt="empty-icon"
         />
-        <span class="empty-info">下锅下锅~</span>
-      </div>
-      <div v-if="cookingPoor.length" class="inPot">
-        <foodProcess
-          v-for="cooking in cookingPoor"
-          :id="cooking.id"
-          :key="cooking.food"
-          :time="cooking.time"
-          :foodName="cooking.food"
-          @completeCooking="completeCooking"
-          @delTargetFood="delTargetFood"
-        ></foodProcess>
+        <span class="empty-info">别干看着，下锅，下锅~</span>
       </div>
     </view>
     <u-modal
@@ -182,8 +185,6 @@ const menuTypeList = menuList.map((item) => {
 
 const activeType = ref(MenuType.Meat)
 
-// console.log('menuTypeList', menuTypeList)
-
 const menuTypeClick = ({ name }: { name: MenuType }) => {
   activeType.value = name
 }
@@ -215,7 +216,6 @@ const addToCook = (food: string, time: number) => {
     time,
     food
   }
-
   cookingPoor.push(cookingFood)
 }
 
@@ -236,6 +236,7 @@ const completeCooking = (id: number) => {
     }
     return 0
   })
+  console.log('cookingPoor', cookingPoor)
 }
 
 const delTargetFood = (id: number) => {
@@ -246,7 +247,7 @@ const delTargetFood = (id: number) => {
 }
 
 const showClearAlert = ref(false)
-const alertContent = '是否清空所有计时器'
+const alertContent = '那我清空计时器喽？'
 
 const clearButton = () => {
   showClearAlert.value = true
@@ -260,14 +261,18 @@ const clearAll = () => {
 const clearCancel = () => {
   showClearAlert.value = false
 }
+const alignItem = computed(() => (cookingPoor.length ? 'flex-start' : 'center'))
 </script>
 <style lang="scss" scoped>
 $card-border-radius: 24rpx;
 
 .wrapper {
+  display: flex;
+  flex-direction: column;
   background-color: #e93134;
-  height: 100vh;
+  height: 100%;
   padding: 0 40rpx;
+  min-height: 100vh;
 }
 .titleInfo {
   display: flex;
@@ -306,7 +311,7 @@ $card-border-radius: 24rpx;
 } */
 .menuCard {
   height: 400rpx;
-  margin: 20rpx 0;
+  margin-top: 20rpx;
   padding: 20rpx;
   border-radius: $card-border-radius;
   background-color: #fff;
@@ -344,14 +349,14 @@ $card-border-radius: 24rpx;
 .customBlock {
   background-color: #fff;
   height: 100rpx;
-  margin: 40rpx 0;
+  margin-bottom: 40rpx;
+  margin-top: 40rpx;
   border-radius: $card-border-radius;
   justify-content: space-between;
   padding: 0 20rpx;
   font-size: 32rpx;
   color: #3a3a3a;
   align-items: center;
-
   display: flex;
 
   .customInputWrap {
@@ -375,10 +380,21 @@ $card-border-radius: 24rpx;
 }
 .potCard {
   background-color: #fff;
-  height: 500rpx;
+  max-height: 800rpx;
   border-radius: $card-border-radius;
+  margin-bottom: 30px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: v-bind(alignItem);
   .inPot {
-    padding: 0 10rpx;
+    padding: 0 10rpx 20rpx 10rpx;
+    overflow-y: scroll;
+    max-height: 700rpx;
+  }
+
+  .cookingPot {
+    width: 100%;
   }
 
   .tool {
@@ -400,7 +416,9 @@ $card-border-radius: 24rpx;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     height: 100%;
+    margin-top: -30rpx;
   }
 
   .empty-image {
