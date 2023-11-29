@@ -57,14 +57,25 @@
       ></up-button>
     </view>
     <view class="potCard">
-      <div class="empty-container">
+      <div v-if="cookingPoor.length" class="tool">
+        <!-- <img
+          class="left-img"
+          src="../../static/img/hotpotEmpty.png"
+          alt="icon"
+        /> -->
+        <div class="right-tools">
+          <span class="clear-button" @click="clearButton"> 🧹 </span>
+        </div>
+      </div>
+      <div v-else="!cookingPoor.length" class="empty-container">
         <img
           class="empty-image"
           src="../../static/img/hotpotEmpty.png"
           alt="empty-icon"
         />
+        <span class="empty-info">下锅下锅~</span>
       </div>
-      <div class="inPot">
+      <div v-if="cookingPoor.length" class="inPot">
         <foodProcess
           v-for="cooking in cookingPoor"
           :id="cooking.id"
@@ -76,6 +87,13 @@
         ></foodProcess>
       </div>
     </view>
+    <u-modal
+      showCancelButton
+      @confirm="clearAll"
+      @cancel="clearCancel"
+      :show="showClearAlert"
+      :content="alertContent"
+    ></u-modal>
   </view>
 </template>
 
@@ -227,9 +245,20 @@ const delTargetFood = (id: number) => {
   }
 }
 
+const showClearAlert = ref(false)
+const alertContent = '是否清空所有计时器'
+
+const clearButton = () => {
+  showClearAlert.value = true
+}
 const clearAll = () => {
   // 清空列表
   cookingPoor.length = 0
+  showClearAlert.value = false
+}
+
+const clearCancel = () => {
+  showClearAlert.value = false
 }
 </script>
 <style lang="scss" scoped>
@@ -352,17 +381,36 @@ $card-border-radius: 24rpx;
     padding: 0 10rpx;
   }
 
+  .tool {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10rpx 30rpx 10rpx 20rpx;
+    .left-img {
+      width: 80rpx;
+      height: 80rpx;
+      object-fit: contain;
+    }
+    .right-tools {
+      font-size: 40rpx;
+    }
+  }
+
   .empty-container {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     height: 100%;
   }
 
   .empty-image {
-    width: 400rpx;
-    height: 400rpx;
+    width: 300rpx;
+    height: 300rpx;
     object-fit: contain;
+  }
+  .empty-info {
+    margin-top: -30rpx;
+    color: #999;
   }
 }
 </style>

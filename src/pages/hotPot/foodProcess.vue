@@ -99,7 +99,7 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .wrapper {
   position: relative;
-  margin: 6rpx 0;
+  margin: 8rpx 0;
 }
 .infoMask {
   font-size: 12px;
