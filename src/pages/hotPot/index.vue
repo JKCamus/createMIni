@@ -43,17 +43,28 @@
     <view class="customBlock">
       <div class="customInputWrap">
         <span class="label">菜名</span>
-        <up-input placeholder="自定义菜名" border="none" clearable></up-input>
+        <up-input
+          v-model="customFood.food"
+          placeholder="自定义菜名"
+          border="none"
+          clearable
+        ></up-input>
       </div>
       <div class="customInputWrap">
         <span class="label">时间</span>
-        <up-input placeholder="自定义时间" border="none" clearable></up-input>
+        <up-input
+          v-model="customFood.time"
+          placeholder="自定义时间"
+          border="none"
+          clearable
+        ></up-input>
       </div>
       <up-button
         class="putIntoButton"
         type="primary"
         text="下锅"
-        color="#e93134"
+        @click="customAddToCook"
+        color="#ff4d4f"
       ></up-button>
     </view>
     <view class="potCard">
@@ -90,6 +101,7 @@
         <span class="empty-info">别干看着，下锅，下锅~</span>
       </div>
     </view>
+    <u-toast ref="uToastRef"></u-toast>
     <u-modal
       showCancelButton
       @confirm="clearAll"
@@ -114,6 +126,7 @@ enum MenuType {
   StapleFood = '主食',
   CustomHistory = '自定义历史'
 }
+
 interface List {
   food: string
   time: number
@@ -126,6 +139,15 @@ type CookingItem = List & {
 interface MenuList {
   type: MenuType
   list: List[]
+}
+
+interface ShowFunctionParams {
+  message: string
+  type: 'error' | 'success'
+}
+
+interface UToast {
+  show: (params: ShowFunctionParams) => void
 }
 
 const menuList = reactive<MenuList[]>([
@@ -210,6 +232,52 @@ const formatTime = (time: number) => {
 
 const cookingPoor = reactive<CookingItem[]>([])
 
+const customFood = reactive<{ food: string; time: number | undefined }>({
+  food: '',
+  time: undefined
+})
+
+const uToastRef = ref<UToast>({
+  show: () => {}
+})
+
+const customAddToCook = () => {
+  const time = Number(customFood.time)
+  const foodLengthLimit = 10
+  const timeLimit = 2 * 60 * 60 // 2小时，以分钟为单位
+  let notice = ''
+
+  // 检查菜名长度
+  if (customFood.food.length > foodLengthLimit) {
+    notice = '菜名太长了，锅都放不下了🤪'
+  }
+
+  // 检查烹饪时间
+  if (time > timeLimit) {
+    notice = notice ? '你在找茬是不是？💢' : '煮太久了，咱不吃了🤪'
+  }
+
+  // 如果有任何提醒信息，则不继续执行
+  if (notice) {
+    uToastRef?.value?.show({
+      message: notice,
+      type: 'error'
+    })
+
+    return
+  }
+
+  const cookingFood = {
+    id: Date.now(),
+    food: customFood.food,
+    time
+  }
+
+  cookingPoor.push(cookingFood)
+  customFood.food = ''
+  customFood.time = undefined
+}
+
 const addToCook = (food: string, time: number) => {
   const cookingFood = {
     id: Date.now(),
@@ -236,7 +304,7 @@ const completeCooking = (id: number) => {
     }
     return 0
   })
-  console.log('cookingPoor', cookingPoor)
+  console.log('cookingPoor', cookingPoor)//todo 修复 id 导致不排序bug
 }
 
 const delTargetFood = (id: number) => {
@@ -310,7 +378,7 @@ $card-border-radius: 24rpx;
   }
 } */
 .menuCard {
-  height: 400rpx;
+  height: 320rpx;
   margin-top: 20rpx;
   padding: 20rpx;
   border-radius: $card-border-radius;
@@ -374,8 +442,8 @@ $card-border-radius: 24rpx;
 }
 .putIntoButton {
   width: 96rpx;
-  button {
-    height: 30px !important;
+  :deep(button) {
+    height: 56rpx;
   }
 }
 .potCard {
