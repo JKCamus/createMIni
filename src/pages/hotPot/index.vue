@@ -29,7 +29,14 @@
     </view>
     <view class="menuCard">
       <div
-        v-for="activeItem in activeList"
+        class="setting"
+        v-if="activeType === MenuType.CustomHistory"
+        @click="recentHistorySetting"
+      >
+        ⚙️
+      </div>
+      <div
+        v-for="(activeItem, index) in activeList"
         class="menu-item"
         :key="activeItem.food"
         @click="addToCook(activeItem.food, activeItem.time)"
@@ -38,13 +45,22 @@
         <span class="foodTimeContainer">
           <span class="foodTime">{{ activeItem.formatTime }}</span>
         </span>
+        <span v-if="showDelIcon" @click.stop="clearRecent(index)">
+          <u-icon
+            name="close"
+            color="#fff"
+            size="14"
+            class="closeIcon"
+          ></u-icon>
+        </span>
       </div>
     </view>
     <view class="customBlock">
       <div class="customInputWrap">
         <span class="label">菜名</span>
         <up-input
-          v-model="customFood.food"
+          :value="customFood.food"
+          @change="changeFoodName"
           placeholder="自定义菜名"
           border="none"
           clearable
@@ -57,6 +73,7 @@
           placeholder="自定义时间"
           border="none"
           clearable
+          type="number"
         ></up-input>
       </div>
       <up-button
@@ -91,7 +108,6 @@
           ></foodProcess>
         </div>
       </div>
-
       <div v-else="!cookingPoor.length" class="empty-container">
         <img
           class="empty-image"
@@ -116,90 +132,15 @@
 import { computed, reactive, ref } from 'vue'
 import foodProcess from './foodProcess.vue'
 
-enum MenuType {
-  Meat = '肉类',
-  Beef = '牛肉',
-  Seafood = '河海鲜',
-  Vegetables = '蔬菜',
-  BeanProducts = '豆制品',
-  Mushrooms = '菌菇',
-  StapleFood = '主食',
-  CustomHistory = '自定义历史'
-}
+import {
+CookingItem,
+MenuList,
+MenuType,
+UToastType,
+menuListData
+} from './type'
 
-interface List {
-  food: string
-  time: number
-}
-type CookingItem = List & {
-  id: number
-  completedAt?: number
-}
-
-interface MenuList {
-  type: MenuType
-  list: List[]
-}
-
-interface ShowFunctionParams {
-  message: string
-  type: 'error' | 'success'
-}
-
-interface UToast {
-  show: (params: ShowFunctionParams) => void
-}
-
-const menuList = reactive<MenuList[]>([
-  {
-    type: MenuType.Meat,
-    list: [
-      { food: '鸭血', time: 6 * 60 },
-      { food: '黄喉', time: 1 * 60 },
-      { food: '肥牛', time: 20 },
-      { food: '毛肚', time: 15 },
-      { food: '鸭肠', time: 20 },
-      { food: '鲜切牛肉', time: 30 },
-      { food: '千层毛肚', time: 3 * 60 },
-      { food: '鹌鹑蛋', time: 3 * 60 }
-    ]
-  },
-  {
-    type: MenuType.Beef,
-    list: [
-      { food: '嫩牛', time: 10 },
-      { food: '三花趾', time: 10 },
-      { food: '五花趾', time: 10 },
-      { food: '匙柄', time: 8 },
-      { food: '匙仁', time: 8 },
-      { food: '脖仁', time: 10 },
-      { food: '吊龙伴', time: 8 },
-      { food: '吊龙', time: 8 },
-      { food: '肥胼', time: 12 },
-      { food: '胸口油', time: 2 * 60 },
-      { food: '牛舌', time: 10 },
-      { food: '牛百叶', time: 8 },
-      { food: '手锤牛肉丸', time: 10 * 60 }
-    ]
-  },
-  {
-    type: MenuType.Seafood,
-    list: [
-      { food: '虾滑', time: 3 * 60 },
-      { food: '巴沙鱼片', time: 3 * 60 },
-      { food: '鲜虾', time: 3 * 60 }
-    ]
-  },
-  {
-    type: MenuType.Vegetables,
-    list: [
-      { food: '娃娃菜', time: 2 * 60 },
-      { food: '菠菜', time: 30 },
-      { food: '冬瓜', time: 3 * 60 },
-      { food: '山药', time: 3 * 60 }
-    ]
-  }
-])
+const menuList = reactive<MenuList[]>(menuListData)
 
 const menuTypeList = menuList.map((item) => {
   return { name: item.type }
@@ -237,12 +178,24 @@ const customFood = reactive<{ food: string; time: number | undefined }>({
   time: undefined
 })
 
-const uToastRef = ref<UToast>({
+const changeFoodName = (e:string) => {
+  customFood.food=e
+}
+
+const changeFoodTime = (e:number) => {
+}
+
+
+const uToastRef = ref<UToastType>({
   show: () => {}
 })
 
 const customAddToCook = () => {
   const time = Number(customFood.time)
+
+  console.log('customFood.time', customFood.time)
+  console.log('customFood.time type', typeof customFood.time)
+  console.log('time', time)
   const foodLengthLimit = 10
   const timeLimit = 2 * 60 * 60 // 2小时，以分钟为单位
   let notice = ''
@@ -251,7 +204,7 @@ const customAddToCook = () => {
   if (customFood.food.length > foodLengthLimit) {
     notice = '菜名太长了，锅都放不下了🤪'
   }
-
+  if (time < 1) notice = '甭麻烦了，直接刺身吧🤡'
   // 检查烹饪时间
   if (time > timeLimit) {
     notice = notice ? '你在找茬是不是？💢' : '煮太久了，咱不吃了🤪'
@@ -266,6 +219,18 @@ const customAddToCook = () => {
 
     return
   }
+
+  // 添加到曾经tab
+  const toRecentFood = {
+    food: customFood.food,
+    time
+  }
+
+  const recentList = menuList.find(
+    (item) => item.type === MenuType.CustomHistory
+  )
+
+  recentList?.list.push(toRecentFood)
 
   const cookingFood = {
     id: Date.now(),
@@ -304,7 +269,7 @@ const completeCooking = (id: number) => {
     }
     return 0
   })
-  console.log('cookingPoor', cookingPoor)//todo 修复 id 导致不排序bug
+  console.log('cookingPoor', cookingPoor) //todo 修复 id 导致不排序bug
 }
 
 const delTargetFood = (id: number) => {
@@ -330,6 +295,28 @@ const clearCancel = () => {
   showClearAlert.value = false
 }
 const alignItem = computed(() => (cookingPoor.length ? 'flex-start' : 'center'))
+
+const isSetting = ref(false)
+
+const showDelIcon = computed(
+  () => isSetting.value && activeType.value === MenuType.CustomHistory
+)
+
+const recentHistorySetting = () => {
+  isSetting.value = !isSetting.value
+}
+
+const clearRecent = (index: number) => {
+  const recentList = menuList.find(
+    (item) => item.type === MenuType.CustomHistory
+  )
+  recentList?.list.splice(index, 1)
+
+  // 清空列表后，自定义setting改为false
+  if (!recentList?.list.length) {
+    isSetting.value = false
+  }
+}
 </script>
 <style lang="scss" scoped>
 $card-border-radius: 24rpx;
@@ -400,6 +387,19 @@ $card-border-radius: 24rpx;
     margin-bottom: 10rpx;
     display: flex;
     align-items: center;
+    position: relative;
+    .closeIcon {
+      position: absolute;
+      top: -4rpx;
+      right: -4rpx;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+  }
+  .setting {
+    flex: 0 0 98%;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .foodName {
