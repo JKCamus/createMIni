@@ -130,7 +130,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 import foodProcess from './foodProcess.vue'
 
 import {
@@ -311,6 +311,35 @@ const clearRecent = (index: number) => {
     isSetting.value = false
   }
 }
+
+const storageKey = 'HOT_POT'
+
+onMounted(() => {
+  const storedData = uni.getStorageSync(storageKey)
+
+  if (storedData) {
+    try {
+      const parsedData = JSON.parse(storedData)
+      const historyMenu = menuList.find(
+        (item) => item.type === MenuType.CustomHistory
+      )
+      if (historyMenu) {
+        historyMenu.list = parsedData
+      }
+    } catch (e) {
+      console.error('Failed to parse stored data:', e)
+    }
+  }
+})
+onUnmounted(() => {
+  const historyMenu = menuList.find(
+    (item) => item.type === MenuType.CustomHistory
+  )
+  if (historyMenu) {
+    const listToStore = historyMenu.list
+    uni.setStorageSync(storageKey, JSON.stringify(listToStore))
+  }
+})
 </script>
 <style lang="scss" scoped>
 $card-border-radius: 24rpx;
@@ -397,9 +426,8 @@ $card-border-radius: 24rpx;
   }
 
   .setting {
-    flex: 0 0 98%;
     display: flex;
-    height: 30px;
+    /* height: 30px; */
     justify-content: flex-end;
   }
 
