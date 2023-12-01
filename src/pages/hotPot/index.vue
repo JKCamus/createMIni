@@ -1,7 +1,7 @@
 <template>
   <view class="wrapper">
     <view class="titleInfo">
-      <!-- <p class="title">锅友</p> -->
+      <p class="title">锅友</p>
       <view class="icon">
         <img
           class="clockIcon"
@@ -35,32 +35,33 @@
       >
         ⚙️
       </div>
-      <div
-        v-for="(activeItem, index) in activeList"
-        class="menu-item"
-        :key="activeItem.food"
-        @click="addToCook(activeItem.food, activeItem.time)"
-      >
-        <span class="foodName">{{ activeItem.food }}</span>
-        <span class="foodTimeContainer">
-          <span class="foodTime">{{ activeItem.formatTime }}</span>
-        </span>
-        <span v-if="showDelIcon" @click.stop="clearRecent(index)">
-          <u-icon
-            name="close"
-            color="#fff"
-            size="14"
-            class="closeIcon"
-          ></u-icon>
-        </span>
+      <div class="menuContainer">
+        <div
+          v-for="(activeItem, index) in activeList"
+          class="menu-item"
+          :key="activeItem.food"
+          @click="addToCook(activeItem.food, activeItem.time)"
+        >
+          <span class="foodName">{{ activeItem.food }}</span>
+          <span class="foodTimeContainer">
+            <span class="foodTime">{{ activeItem.formatTime }}</span>
+          </span>
+          <span v-if="showDelIcon" @click.stop="clearRecent(index)">
+            <u-icon
+              name="close"
+              color="#fff"
+              size="14"
+              class="closeIcon"
+            ></u-icon>
+          </span>
+        </div>
       </div>
     </view>
     <view class="customBlock">
       <div class="customInputWrap">
         <span class="label">菜名</span>
         <up-input
-          :value="customFood.food"
-          @change="changeFoodName"
+          v-model="customFood.food"
           placeholder="自定义菜名"
           border="none"
           clearable
@@ -81,7 +82,7 @@
         type="primary"
         text="下锅"
         @click="customAddToCook"
-        color="#ff4d4f"
+        color="rgb(227, 67, 70)"
       ></up-button>
     </view>
     <view class="potCard">
@@ -178,32 +179,25 @@ const customFood = reactive<{ food: string; time: number | undefined }>({
   time: undefined
 })
 
-const changeFoodName = (e:string) => {
-  customFood.food=e
-}
-
-const changeFoodTime = (e:number) => {
-}
-
-
 const uToastRef = ref<UToastType>({
   show: () => {}
 })
 
+// watchEffect(() => console.log('watch', customFood.time))
+
 const customAddToCook = () => {
   const time = Number(customFood.time)
-
-  console.log('customFood.time', customFood.time)
-  console.log('customFood.time type', typeof customFood.time)
-  console.log('time', time)
   const foodLengthLimit = 10
   const timeLimit = 2 * 60 * 60 // 2小时，以分钟为单位
   let notice = ''
-
+  if (Number.isNaN(time)) {
+    notice = '时间输入错误❎'
+  }
   // 检查菜名长度
   if (customFood.food.length > foodLengthLimit) {
     notice = '菜名太长了，锅都放不下了🤪'
   }
+
   if (time < 1) notice = '甭麻烦了，直接刺身吧🤡'
   // 检查烹饪时间
   if (time > timeLimit) {
@@ -324,7 +318,7 @@ $card-border-radius: 24rpx;
 .wrapper {
   display: flex;
   flex-direction: column;
-  background-color: #e93134;
+  background-color: #d63628;
   height: 100%;
   padding: 0 40rpx;
   min-height: 100vh;
@@ -371,34 +365,41 @@ $card-border-radius: 24rpx;
   border-radius: $card-border-radius;
   background-color: #fff;
   display: flex;
-  gap: 10rpx;
-  flex-wrap: wrap;
-  overflow-y: scroll;
-  align-content: flex-start;
+  flex-direction: column;
 
-  .menu-item {
-    background-color: #ff4d4f;
-    height: 48rpx;
-    font-size: 28rpx;
-    color: white;
-    padding: 10rpx 18rpx;
-    border-radius: 10rpx;
-    justify-content: space-between;
-    margin-bottom: 10rpx;
+  .menuContainer {
+    overflow-y: scroll;
+    flex-wrap: wrap;
+    overflow-y: scroll;
     display: flex;
-    align-items: center;
-    position: relative;
-    .closeIcon {
-      position: absolute;
-      top: -4rpx;
-      right: -4rpx;
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
+    gap: 10rpx;
+    align-content: flex-start;
+    .menu-item {
+      background-color: rgb(227, 67, 70);
+      height: 48rpx;
+      font-size: 28rpx;
+      color: white;
+      padding: 10rpx 18rpx;
+      border-radius: 10rpx;
+      justify-content: space-between;
+      margin-bottom: 10rpx;
+      display: flex;
+      align-items: center;
+      position: relative;
+      .closeIcon {
+        position: absolute;
+        top: -4rpx;
+        right: -4rpx;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
     }
   }
+
   .setting {
     flex: 0 0 98%;
     display: flex;
+    height: 30px;
     justify-content: flex-end;
   }
 
@@ -439,13 +440,14 @@ $card-border-radius: 24rpx;
   .customInputWrap up-input {
     flex: 1;
   }
-}
-.putIntoButton {
-  width: 96rpx;
-  :deep(button) {
-    height: 56rpx;
+  .putIntoButton {
+    width: 96rpx;
+    :deep(button) {
+      height: 56rpx;
+    }
   }
 }
+
 .potCard {
   background-color: #fff;
   max-height: 800rpx;

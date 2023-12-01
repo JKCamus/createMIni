@@ -3,7 +3,7 @@
     <u-line-progress
       :percentage="percentage"
       :showText="false"
-      activeColor="#ff4d4f"
+      activeColor="rgb(227, 67, 70)"
       height="30"
     ></u-line-progress>
     <div class="infoMask" :class="{ bold: percentage === 100 }">
